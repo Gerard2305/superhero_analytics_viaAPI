@@ -1,6 +1,7 @@
 import streamlit as st
 from src.filters import top_10_highest, top_10_lowest, top_10_balanced
 from src.plots import plot_top_heroes, plot_hero_radar
+from src.image_ai import generate_hero_image  # <--- IMPORTACIÓN NUEVA
 
 # --- CONFIGURACIÓN VISUAL ---
 TRADUCCIONES = {
@@ -85,7 +86,7 @@ def render_hero_detail():
     with c1:
         img_url = h.images.get('lg') or h.images.get('sm') or ""
         
-        # Corrección de atributos (Evita el AttributeError)
+        # Corrección de atributos
         full_name = h.biography.fullName if h.biography.fullName else "Desconocido"
         place = h.biography.placeOfBirth if h.biography.placeOfBirth != "-" else "Desconocido"
         race = h.appearance.race if h.appearance.race else "Desconocida"
@@ -107,7 +108,7 @@ def render_hero_detail():
 
         st.divider()
         
-        # --- SECCIÓN IA RESTAURADA ---
+        # --- SECCIÓN IA ---
         st.markdown("""
         <div style="background-color: #262730; padding: 15px; border-radius: 10px; border-left: 5px solid #FF4B4B;">
             <p style="margin:0; font-style: italic;">
@@ -131,18 +132,38 @@ def render_hero_detail():
         fig = plot_hero_radar(h)
         if fig: st.pyplot(fig, use_container_width=True)
 
-# --- VISTA 3: LABORATORIO IA ---
+# --- VISTA 3: LABORATORIO IA (MODIFICADA) ---
 def render_ai_view():
     h = st.session_state.selected_hero
+    
+    # Botón de volver
     st.button("⬅ Volver a ficha del héroe", on_click=change_view, args=("hero",))
     
     st.header(f"🎨 Laboratorio Creativo: {h.name}")
-    
-    st.info("🚧 Módulo de DALL·E en construcción...")
-    st.markdown(f"""
-        Estás a un paso de generar una variante única de **{h.name}**.
+    st.divider()
+
+    # Contenedor principal de la generación
+    with st.container():
         
-        En la versión final, aquí verás:
-        1. El prompt de generación optimizado.
-        2. La imagen generada en estilo Cómic/Dark.
-    """)
+        # Spinner mientras se ejecuta la llamada a Azure
+        with st.spinner(f"🤖 Conectando con DALL·E 3 para imaginar a {h.name} (Estilo Noir)..."):
+            image_url = generate_hero_image(h.name)
+
+        # Lógica de visualización de resultado
+        if image_url:
+            # ÉXITO
+            st.success("✨ ¡Imagen generada con éxito!")
+            st.image(image_url, caption=f"Versión alternativa de {h.name}", use_container_width=True)
+            st.info("ℹ️ Descárgala pronto, el enlace es temporal.")
+        else:
+            # ERROR (Filtro de contenido)
+            st.error("❌ Error: La solicitud fue rechazada por la API.")
+            
+            # Mensaje explicativo solicitado
+            st.warning("""
+                ⚠️ **Aviso de Azure OpenAI:**
+                
+                Las políticas de derechos de autor se modificaron recientemente, lo cual no permite la generación de imágenes con personajes "similares" o "parecidos", ya que se bloquean automáticamente.
+                
+                Lo sentimos :(
+            """)
