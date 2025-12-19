@@ -1,0 +1,54 @@
+============================================================
+🦸 MARVEL ON YOUR DESK - ENTREGABLE FINAL
+============================================================
+Alumno: Gerardo [Tu Apellido]
+Materia: Lenguajes de Programación Potenciados con IA
+
+Este paquete contiene el código fuente completo de la aplicación.
+
+------------------------------------------------------------
+ESTRUCTURA DE ARCHIVOS
+------------------------------------------------------------
+/src              -> Código fuente (lógica, ui, api, ia)
+.env              -> Claves de API configuradas y listas para usar
+requirements.txt  -> Lista de librerías necesarias
+app.py            -> Punto de entrada principal
+
+------------------------------------------------------------
+INSTRUCCIONES DE INSTALACIÓN (USANDO CONDA)
+------------------------------------------------------------
+
+1. PREPARACIÓN DEL ENTORNO
+   Abra su terminal (o Anaconda Prompt) en la carpeta descomprimida y ejecute:
+
+   # Crear el entorno llamado 'superhero' con Python 3.10
+   conda create -n superhero python=3.10 -y
+
+   # Activar el entorno
+   conda activate superhero
+
+2. INSTALACIÓN DE DEPENDENCIAS
+   Una vez activado el entorno 'superhero', instale las librerías necesarias:
+   
+   pip install -r requirements.txt
+
+   (Nota: Usamos pip dentro de conda para garantizar compatibilidad con Streamlit).
+
+------------------------------------------------------------
+EJECUCIÓN DE LA APP
+------------------------------------------------------------
+
+Una vez instaladas las dependencias, lance la aplicación con:
+
+   streamlit run src/app.py
+
+El navegador debería abrirse automáticamente mostrando la interfaz.
+
+------------------------------------------------------------
+NOTA IMPORTANTE SOBRE LAS CLAVES
+------------------------------------------------------------
+He incluido el archivo ".env" con mis claves personales (Marvel API y Azure OpenAI)
+para facilitar su corrección inmediata sin necesidad de configuración adicional.
+Por favor, asegúrese de que este archivo ".env" esté en la misma carpeta que este instructivo.
+
+¡Espero que disfrute la aplicación!

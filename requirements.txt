@@ -5,4 +5,4 @@ seaborn
 streamlit
 requests
 python-dotenv
-whatchdog
+watchdog
